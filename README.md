@@ -9,3 +9,13 @@ status for their area and submit community reports of outages.
 - Front-end: HTML, CSS, JavaScript
 - Back-end: Node.js with Express
 - Database: SQLite
+
+## Running the project locally
+
+1. Install [Node.js](https://nodejs.org) (LTS version).
+2. Clone this repository and open the folder in a terminal.
+3. Install dependencies: `npm install`
+4. Start the server: `npm start`
+5. Open http://localhost:3000 in your browser.
+
+*Full installation and usage instructions will be completed at the end of the project.*
