@@ -11,6 +11,9 @@
 const express = require('express');
 const path = require('path');
 
+// Opens the SQLite database (creating and filling it on first run)
+const db = require('./db/database');
+
 const app = express();
 
 // Use port 3000 unless the environment provides a different one
@@ -33,6 +36,12 @@ app.get('/api/health', (req, res) => {
     message: 'Server is running',
     time: new Date().toISOString()
   });
+});
+
+// Returns all Cape Town areas, sorted A-Z (used to fill the area dropdown)
+app.get('/api/areas', (req, res) => {
+  const areas = db.prepare('SELECT id, name FROM areas ORDER BY name').all();
+  res.json(areas);
 });
 
 // --- Start the server ---
