@@ -26,6 +26,12 @@ const MAX_DESCRIPTION_LENGTH = 200;
 const MAX_REPORTS_RETURNED = 20;
 const INVALID_ID_ERROR = 'Area id must be a positive whole number';
 
+// Active outage rule: an area is flagged when it has at least
+// OUTAGE_REPORT_THRESHOLD reports of the same type (power or water)
+// made within the last OUTAGE_WINDOW_MINUTES minutes.
+const OUTAGE_REPORT_THRESHOLD = 3;
+const OUTAGE_WINDOW_MINUTES = 60;
+
 // The report columns we send to the front-end. The timestamp is converted to
 // ISO 8601 UTC (e.g. 2026-01-01T12:00:00Z) so the browser can convert it to
 // the user's local time. This is a fixed string, never built from user input.
@@ -76,6 +82,48 @@ function findArea(areaId) {
   return db.prepare('SELECT id, name FROM areas WHERE id = ?').get(areaId);
 }
 
+/**
+ * Summarises the recent community reports for one area.
+ *
+ * Counts the reports made in the last OUTAGE_WINDOW_MINUTES minutes, separately
+ * for power and water. A type is flagged as an active outage when its count
+ * reaches OUTAGE_REPORT_THRESHOLD. Because the count only looks at the last
+ * hour, a flag switches itself off once the reports become old enough.
+ *
+ * @param {number} areaId
+ * @returns {object} the window, the threshold and a count/flag for each type
+ */
+function getCommunityReports(areaId) {
+  // created_at is stored in UTC, and datetime('now', ...) is also UTC, so the
+  // two can be compared directly. The "-60 minutes" modifier is passed as a
+  // parameter.
+  const rows = db.prepare(`
+    SELECT type, COUNT(*) AS count
+    FROM reports
+    WHERE area_id = ? AND created_at >= datetime('now', ?)
+    GROUP BY type
+  `).all(areaId, `-${OUTAGE_WINDOW_MINUTES} minutes`);
+
+  // Start both types at 0, then fill in the counts the query found
+  const counts = { power: 0, water: 0 };
+  for (const row of rows) {
+    counts[row.type] = row.count;
+  }
+
+  return {
+    windowMinutes: OUTAGE_WINDOW_MINUTES,
+    threshold: OUTAGE_REPORT_THRESHOLD,
+    power: {
+      count: counts.power,
+      activeOutage: counts.power >= OUTAGE_REPORT_THRESHOLD
+    },
+    water: {
+      count: counts.water,
+      activeOutage: counts.water >= OUTAGE_REPORT_THRESHOLD
+    }
+  };
+}
+
 // --- Routes ---
 
 // Simple health check route to confirm the back-end is running
@@ -94,10 +142,10 @@ app.get('/api/areas', (req, res) => {
 });
 
 /**
- * Returns the load shedding status for one area:
+ * Returns the status for one area:
  *  - the area itself
- *  - the current stage
- *  - the scheduled slots that apply at the current stage
+ *  - the current load shedding stage and the schedule slots that apply
+ *  - a summary of recent community reports, including active outage flags
  *
  * A slot applies when the current stage is >= the slot's min_stage.
  * Responds with 400 for an invalid id and 404 if the area does not exist.
@@ -138,7 +186,8 @@ app.get('/api/areas/:id/status', (req, res) => {
     area,
     stage,
     loadSheddingActive: stage > 0,
-    schedule
+    schedule,
+    communityReports: getCommunityReports(areaId)
   });
 });
 
