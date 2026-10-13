@@ -1,6 +1,6 @@
 # Manual Test Log
 
-Tests run by hand in the browser and with curl. Automated tests are added in a later step.
+Tests run by hand in the browser, with curl and with sqlite3. Automated tests are added in a later step.
 
 ## Step 4: Area status route
 
@@ -25,3 +25,14 @@ Tests run by hand in the browser and with curl. Automated tests are added in a l
 | T12 | Post to area that does not exist | POST /api/areas/999/reports | 404, "Area not found" | Pass |
 | T13 | Malformed JSON | POST with body {"type":"power", | 400, "Request body must be valid JSON" | Pass |
 | T14 | List reports for area that does not exist | GET /api/areas/999/reports | 404, "Area not found" | Pass |
+
+## Step 6: Active outage detection
+
+| ID | Test | Input | Expected result | Result |
+|----|------|-------|-----------------|--------|
+| T15 | No reports | GET /api/areas/1/status with no reports | power and water count 0, activeOutage false | Pass |
+| T16 | Below threshold | 2 power reports in area 1, then GET status | power count 2, activeOutage false | Pass |
+| T17 | Threshold reached | 3rd power report in area 1, then GET status | power count 3, activeOutage true, water false | Pass |
+| T18 | Other areas unaffected | GET /api/areas/2/status | counts 0, no flags | Pass |
+| T19 | Old reports ignored | 3 water reports 2 hours old in area 2, then GET status | water count 0, activeOutage false | Pass |
+| T20 | Recent reports counted, old still ignored | Add 3 water reports 30 minutes old in area 2, then GET status | water count 3 (not 6), activeOutage true | Pass |

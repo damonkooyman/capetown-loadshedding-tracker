@@ -20,9 +20,16 @@ Returns all Cape Town areas, sorted A-Z. Used to fill the area dropdown.
 ```
 
 ## GET /api/areas/:id/status
-Returns the current load shedding stage and the schedule slots that apply to
-one area at that stage. A slot applies when the current stage is greater than
-or equal to the slot's `minStage`. Slots are sorted Monday to Sunday.
+Returns everything the front-end needs to show one area:
+- the current load shedding stage and the schedule slots that apply at that
+  stage (a slot applies when the stage is greater than or equal to its
+  `minStage`; slots are sorted Monday to Sunday)
+- a summary of recent community reports (`communityReports`)
+
+**Active outage rule:** power and water are counted separately. A type is
+flagged as an `activeOutage` when the area has at least `threshold` (3) reports
+of that type made within the last `windowMinutes` (60) minutes. The flag
+switches itself off when the reports become older than the window.
 
 **Example:** `GET /api/areas/1/status`
 
@@ -35,7 +42,13 @@ or equal to the slot's `minStage`. Slots are sorted Monday to Sunday.
   "schedule": [
     { "day": "Monday", "startTime": "08:00", "endTime": "10:30", "minStage": 1 },
     { "day": "Wednesday", "startTime": "16:00", "endTime": "18:30", "minStage": 2 }
-  ]
+  ],
+  "communityReports": {
+    "windowMinutes": 60,
+    "threshold": 3,
+    "power": { "count": 3, "activeOutage": true },
+    "water": { "count": 0, "activeOutage": false }
+  }
 }
 ```
 

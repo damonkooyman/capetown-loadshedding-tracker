@@ -63,3 +63,19 @@ risk without adding value for this project's scope.
   all still gets Express's default "Cannot GET" page.)
 - Timestamps are returned in ISO 8601 UTC so the browser can show them in the
   user's local time.
+
+## Active outage detection
+- The status route also summarises recent community reports for the area.
+- Rule: 3 or more reports of the same type (power or water) within the last 60
+  minutes flags an active outage for that type. Power and water are counted
+  separately.
+- The threshold and time window are constants at the top of `server.js`, so
+  they are easy to find and change.
+- The count is recalculated from the report timestamps on every request, so a
+  flag switches itself off once reports are older than an hour. Nothing has to
+  be reset or cleaned up.
+- Report times are stored in UTC and compared against UTC in SQL, so time zones
+  do not affect the count.
+- Known limitation: the app has no user accounts, so one person could submit
+  several reports to trigger a flag. User accounts and rate limiting are outside
+  the scope of this project, and would be the next step for a real deployment.
