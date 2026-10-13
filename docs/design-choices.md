@@ -45,3 +45,21 @@ for anyone who installs it.
 ## Why not Java EE / JSF?
 Java EE needs an application server and heavier configuration, which adds setup
 risk without adding value for this project's scope.
+
+## API design and validation
+- Routes are grouped under `/api/areas/:id/...`, so everything about one area
+  (status, reports) lives under that area's URL.
+- Every route that takes an area id checks it first (400 if invalid, 404 if the
+  area does not exist) before doing any work.
+- Report input is validated on the server, whatever the front-end sends: the
+  type must be `power` or `water`, and the optional description must be text of
+  200 characters or fewer.
+- All database queries use prepared statements with `?` placeholders, so user
+  input is never placed directly into SQL.
+- Errors raised inside the API are returned as JSON with a clear message and an
+  appropriate status code. A final error handler reports client mistakes
+  (invalid JSON, a body that is too large, a badly encoded URL) as 4xx errors,
+  and logs unexpected failures and returns 500. (A URL that does not exist at
+  all still gets Express's default "Cannot GET" page.)
+- Timestamps are returned in ISO 8601 UTC so the browser can show them in the
+  user's local time.
