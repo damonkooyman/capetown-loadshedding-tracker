@@ -5,9 +5,87 @@
   <!-- Makes the page scale correctly on phones and tablets -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cape Town Load Shedding &amp; Water Alert Tracker</title>
+  <!-- A small lightning bolt tab icon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 </head>
 <body>
-  <h1>Cape Town Load Shedding &amp; Water Alert Tracker</h1>
-  <p>Coming soon...</p>
+  <header>
+    <h1>Cape Town Load Shedding &amp; Water Alert Tracker</h1>
+    <p>Check load shedding and community outage reports for your area, and report
+       a problem to help your neighbours.</p>
+  </header>
+
+  <main>
+    <noscript>
+      <p>This app needs JavaScript. Please turn it on in your browser settings.</p>
+    </noscript>
+
+    <!-- Step 1: the user picks an area. The options are filled in by js/app.js -->
+    <section id="area-picker">
+      <label for="area-select">Choose your area</label>
+      <select id="area-select">
+        <option value="">Loading areas...</option>
+      </select>
+    </section>
+
+    <!-- General messages (loading and errors) are shown here -->
+    <p id="page-message" role="status" hidden></p>
+
+    <!-- Step 2: status for the chosen area (hidden until an area is chosen) -->
+    <section id="status-section" hidden>
+      <h2 id="area-name"></h2>
+
+      <h3>Load shedding</h3>
+      <p id="stage-text"></p>
+      <table id="schedule-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Starts</th>
+            <th>Ends</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body"></tbody>
+      </table>
+      <p id="no-schedule" hidden>No load shedding is scheduled at the current stage.</p>
+      <p>Schedule times are simulated sample data, not the official City of Cape Town schedule.</p>
+
+      <h3>Community reports</h3>
+      <ul id="community-list"></ul>
+    </section>
+
+    <!-- Step 3: the report form -->
+    <section id="report-section" hidden>
+      <h2>Report a problem</h2>
+      <form id="report-form">
+        <div>
+          <label for="report-type">What is happening?</label>
+          <select id="report-type">
+            <option value="power">Power outage</option>
+            <option value="water">Water disruption</option>
+          </select>
+        </div>
+        <div>
+          <label for="report-description">Details (optional, up to 200 characters)</label>
+          <textarea id="report-description" rows="3" maxlength="200"></textarea>
+        </div>
+        <button id="report-button" type="submit">Submit report</button>
+      </form>
+      <p id="form-message" role="status" hidden></p>
+    </section>
+
+    <!-- Step 4: the most recent reports for the area -->
+    <section id="reports-section" hidden>
+      <h2>Recent reports</h2>
+      <ul id="reports-list"></ul>
+      <p id="no-reports" hidden>No reports yet for this area.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Cape Town Load Shedding &amp; Water Alert Tracker - student project</p>
+  </footer>
+
+  <script src="js/app.js"></script>
 </body>
 </html>
