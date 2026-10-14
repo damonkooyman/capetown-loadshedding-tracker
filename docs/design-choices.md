@@ -79,3 +79,27 @@ risk without adding value for this project's scope.
 - Known limitation: the app has no user accounts, so one person could submit
   several reports to trigger a flag. User accounts and rate limiting are outside
   the scope of this project, and would be the next step for a real deployment.
+
+## Front-end design
+- The front-end is one page (`public/index.html`) and one JavaScript file
+  (`public/js/app.js`), with no framework and no build step. Opening the
+  server's address is all that is needed to use it.
+- The page never reloads. JavaScript calls the API with `fetch()` and updates
+  the page. The two main dynamic interactions are: (1) choosing an area loads its
+  status and reports, and (2) submitting the form sends the report with a
+  `POST` and then refreshes the page with the new data.
+- Sections that depend on an area stay hidden until one is chosen.
+- Text from the API is always added to the page with `textContent`, never
+  `innerHTML`, so a report description cannot inject HTML or scripts.
+- Error messages from the back-end are shown to the user, and a friendly
+  message is shown if the server cannot be reached.
+- While a report is being sent, the submit button and the area dropdown are
+  disabled, so a report cannot be sent twice by accident or end up on screen
+  under the wrong area.
+- If the user switches area while data is still loading, the late response is
+  ignored, so the page never shows data for the wrong area.
+- The chosen area refreshes every 60 seconds, so reports from other people
+  appear without reloading the page.
+- Report times are shown as "5 min ago". The exact local time shows when hovering
+  over it. The back-end sends UTC timestamps, and the browser converts them to
+  local time.

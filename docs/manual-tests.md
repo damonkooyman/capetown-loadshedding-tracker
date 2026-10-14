@@ -36,3 +36,17 @@ Tests run by hand in the browser, with curl and with sqlite3. Automated tests ar
 | T18 | Other areas unaffected | GET /api/areas/2/status | counts 0, no flags | Pass |
 | T19 | Old reports ignored | 3 water reports 2 hours old in area 2, then GET status | water count 0, activeOutage false | Pass |
 | T20 | Recent reports counted, old still ignored | Add 3 water reports 30 minutes old in area 2, then GET status | water count 3 (not 6), activeOutage true | Pass |
+
+## Step 7: Front-end page (in the browser)
+
+| ID | Test | Action | Expected result | Result |
+|----|------|--------|-----------------|--------|
+| T21 | Page loads and dropdown fills | Open http://localhost:3000 | Dropdown lists the 10 areas A-Z; status, form and reports sections not visible | Pass |
+| T22 | Choose an area | Select Sea Point | Heading, Stage 2, schedule (Monday, Wednesday) and community lines shown without reloading | Pass |
+| T23 | Area with no reports | Look at Recent reports for Sea Point | "No reports yet for this area." | Pass |
+| T24 | Submit a report | Submit a power report with a description | Success message, report at top of list as "just now", power count 1, form cleared | Pass |
+| T25 | Outage flag appears | Submit two more power reports | Power line shows ACTIVE OUTAGE with 3 reports; water not flagged | Pass |
+| T26 | Switch areas | Select Gardens | Gardens schedule, 0 reports, no outage, no leftover message | Pass |
+| T27 | HTML in a description | Submit the text `<b>bold</b> test` | Shown as plain text with visible angle brackets, not bold | Pass |
+| T28 | Automatic refresh | Add a report with curl while the page stays open | New report appears within about a minute without reloading | Pass |
+| T29 | Server unreachable | Stop the server, then choose a different area | "Could not reach the server" message; page recovers after restart | Pass |
