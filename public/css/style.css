@@ -295,3 +295,82 @@ th {
 #no-schedule {
   color: var(--colour-muted);
 }
+
+/* ==========================================================================
+   Larger screens
+   ========================================================================== */
+
+/* --- Tablet: 600px and wider --- */
+@media (min-width: 600px) {
+  header {
+    padding: 1.75rem 2rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  main {
+    padding: 1.5rem 2rem;
+  }
+
+  main > section {
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* No need for a full-width dropdown on a wider screen */
+  #area-select {
+    max-width: 24rem;
+  }
+
+  button {
+    width: auto;
+    min-width: 12rem;
+  }
+}
+
+/* --- Desktop: 900px and wider --- */
+@media (min-width: 900px) {
+  /* Keep the header text lined up with the content below it */
+  header {
+    padding-right: max(2rem, calc((100% - 68rem) / 2 + 2rem));
+    padding-left: max(2rem, calc((100% - 68rem) / 2 + 2rem));
+  }
+
+  /* Two columns: the status on the left, the form and recent reports on the
+     right. The picker and messages span both columns. minmax(0, ...) lets a
+     column shrink below the width of its content, so one very long word can
+     never push the layout wider than the screen. */
+  main {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:
+      "picker  picker"
+      "message message"
+      "status  form"
+      "status  reports";
+    column-gap: 1.5rem;
+    align-items: start;
+  }
+
+  #area-picker {
+    grid-area: picker;
+  }
+
+  #page-message {
+    grid-area: message;
+  }
+
+  #status-section {
+    grid-area: status;
+  }
+
+  #report-section {
+    grid-area: form;
+  }
+
+  #reports-section {
+    grid-area: reports;
+  }
+}
