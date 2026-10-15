@@ -103,3 +103,28 @@ risk without adding value for this project's scope.
 - Report times are shown as "5 min ago". The exact local time shows when hovering
   over it. The back-end sends UTC timestamps, and the browser converts them to
   local time.
+
+## Responsive design
+- The stylesheet (`public/css/style.css`) is written "mobile first": the base
+  styles are for a phone screen (one column), and media queries add layout
+  changes for tablets (600px and wider) and desktops (900px and wider).
+- On desktop, CSS Grid places the status on the left and the report form and
+  recent reports on the right. On smaller screens everything stacks in one
+  column, so nothing needs to scroll sideways.
+- The page uses `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
+  so phones show it at their real width instead of a zoomed-out desktop view.
+- Buttons and dropdowns are at least 44px tall, which is comfortable to tap.
+  Form fields use a 16px font so iPhones do not zoom in when a field is tapped.
+- Long words in report descriptions wrap inside their card instead of
+  stretching the page. The grid columns use `minmax(0, ...)` and the wrapping
+  rule has a fallback, so this also holds in older browsers.
+- Colours are chosen to meet the WCAG AA contrast ratio (4.5:1) for text. They
+  are defined once as CSS variables at the top of the stylesheet, so they are
+  easy to change.
+- Errors are shown in red, success in green and active outages in a highlighted
+  red row. Each is also written in words, so the page does not rely on colour
+  alone.
+- A visible dark orange outline, with enough contrast against the page
+  backgrounds, shows keyboard focus. The `hidden` attribute is forced to always
+  hide an element, even if another rule sets its display.
+- No CSS framework is used, which keeps the project small and easy to read.

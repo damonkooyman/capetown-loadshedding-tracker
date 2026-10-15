@@ -50,3 +50,14 @@ Tests run by hand in the browser, with curl and with sqlite3. Automated tests ar
 | T27 | HTML in a description | Submit the text `<b>bold</b> test` | Shown as plain text with visible angle brackets, not bold | Pass |
 | T28 | Automatic refresh | Add a report with curl while the page stays open | New report appears within about a minute without reloading | Pass |
 | T29 | Server unreachable | Stop the server, then choose a different area | "Could not reach the server" message; page recovers after restart | Pass |
+
+## Step 8: Responsive design (in the browser)
+
+| ID | Test | Action | Expected result | Result |
+|----|------|--------|-----------------|--------|
+| T30 | Phone width | View at 375px wide | One column of stacked cards, no sideways scrolling, full-width button | Pass |
+| T31 | Narrowest phone | View at 320px wide with a long unbroken word in a report | No sideways scrolling; the long word wraps inside its card | Pass |
+| T32 | Tablet width | View at 768px wide | One column with more padding, compact button, dropdown not full width | Pass |
+| T33 | Desktop width | View at 1280px wide | Two columns: status on the left, form and recent reports on the right | Pass |
+| T34 | Colour states | Active outage, successful report, server stopped | Outage line red, success message green, error message red | Pass |
+| T35 | Keyboard focus | Press Tab repeatedly | A visible dark orange outline moves through the controls | Pass|
