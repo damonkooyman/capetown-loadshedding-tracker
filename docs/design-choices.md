@@ -128,3 +128,26 @@ risk without adding value for this project's scope.
   backgrounds, shows keyboard focus. The `hidden` attribute is forced to always
   hide an element, even if another rule sets its display.
 - No CSS framework is used, which keeps the project small and easy to read.
+
+## Automated testing
+- Tests use Node's built-in test runner (`node:test` and `node:assert`), run with
+  `npm test`. No extra packages are needed, which keeps installation simple.
+- Integration tests start the real Express app on a free port and call it with
+  `fetch()`, the same way the front-end does. Unit tests check the database
+  layer directly.
+- Tests use a temporary in-memory database (set through the `DB_PATH` setting),
+  so the real database is never read or changed. Each test file runs in its
+  own process with its own database. Because the tests delete and add data, a
+  safety check stops them immediately if the in-memory database is not in use.
+- To make this possible, `server.js` exports the app and only starts listening
+  when it is run directly (`npm start`).
+- Test data ("fixtures") is kept in one file, `tests/fixtures.js`. Tests loop
+  over its tables, so adding a case means adding a row.
+- Tests also check what must not happen: invalid reports must be rejected and
+  must not be saved.
+- Old reports, which the API cannot create, are added directly to the test
+  database to check the 60-minute outage window and its edges.
+- The tests repeat the manual API tests (T1 to T20) and add extra cases. The
+  browser behaviour (T21 to T35) is still tested by hand.
+- Deliberately breaking the code (for example changing the outage threshold)
+  makes the matching tests fail, which shows the tests really protect the logic.

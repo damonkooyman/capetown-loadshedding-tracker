@@ -1,6 +1,6 @@
 # Manual Test Log
 
-Tests run by hand in the browser, with curl and with sqlite3. Automated tests are added in a later step.
+Tests run by hand in the browser, with curl and with sqlite3. The API tests T1 to T20 are also repeated as automated tests (see the section at the end).
 
 ## Step 4: Area status route
 
@@ -60,4 +60,21 @@ Tests run by hand in the browser, with curl and with sqlite3. Automated tests ar
 | T32 | Tablet width | View at 768px wide | One column with more padding, compact button, dropdown not full width | Pass |
 | T33 | Desktop width | View at 1280px wide | Two columns: status on the left, form and recent reports on the right | Pass |
 | T34 | Colour states | Active outage, successful report, server stopped | Outage line red, success message green, error message red | Pass |
-| T35 | Keyboard focus | Press Tab repeatedly | A visible dark orange outline moves through the controls | Pass|
+| T35 | Keyboard focus | Press Tab repeatedly | A visible dark orange outline moves through the controls | Pass |
+
+## Automated tests (Step 9)
+
+Run with `npm test`. The tests use Node's built-in test runner, so no extra packages are needed. Integration tests start the real app on a free port with a temporary in-memory database and call it with `fetch()`, so the real database is never touched.
+
+| File | Type | What it covers | Manual tests repeated |
+|------|------|----------------|-----------------------|
+| tests/database.test.js | Unit | Sample data created on first run; rules enforced by the tables (report type, area must exist, unique area name, automatic timestamp) | none |
+| tests/status.test.js | Integration | Health and areas routes; status at every stage; Monday-to-Sunday sorting; invalid ids; unknown area; badly encoded URL | T1 to T6 |
+| tests/reports.test.js | Integration | Saving valid reports; every invalid case; malformed JSON; oversized body; newest first; limit of 20; areas kept separate | T7 to T14 |
+| tests/outages.test.js | Integration | The threshold of 3; power and water counted separately; areas kept separate; the 60-minute window and its edges; the flag switching itself off | T15 to T20 |
+
+**Test data:** defined in `tests/fixtures.js` as tables (valid reports, invalid reports, invalid ids, stages, outage thresholds). Many tests loop over these tables, so each row is one test case.
+
+**Latest run:** 85 tests, 85 passed, 0 failed.
+
+**Not automated:** the browser behaviour (T21 to T35) is checked by hand, because it depends on how the page looks and feels on real screens.
