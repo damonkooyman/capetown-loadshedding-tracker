@@ -4,7 +4,8 @@
   "description": "Web app for community-reported load shedding and water alerts in Cape Town",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "author": "Damon Kooyman",
   "license": "ISC",
