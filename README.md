@@ -43,28 +43,28 @@ The reasons for these choices are explained in
 
 ## Installation
 
-1. Get the code. Either clone the repository:
+**1. Get the code.** Clone the repository:
 
 ```bash
-   git clone https://github.com/damonkooyman/capetown-loadshedding-tracker.git
-   cd capetown-loadshedding-tracker
+git clone https://github.com/damonkooyman/capetown-loadshedding-tracker.git
+cd capetown-loadshedding-tracker
 ```
 
-   or unzip the submitted folder and open a terminal inside it.
+Or unzip the submitted folder and open a terminal inside it.
 
-2. Install the dependencies:
+**2. Install the dependencies:**
 
 ```bash
-   npm install
+npm install
 ```
 
-3. Start the server:
+**3. Start the server:**
 
 ```bash
-   npm start
+npm start
 ```
 
-4. Open <http://localhost:3000> in your web browser.
+**4. Open the app:** go to <http://localhost:3000> in your web browser.
 
 The database file (`db/loadshedding.db`) is **created and filled with sample
 data automatically** the first time the server starts, so there is nothing else
