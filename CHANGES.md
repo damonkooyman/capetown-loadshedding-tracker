@@ -8,3 +8,4 @@ followed the Phase 1 proposal.
 |------|--------|--------|
 | 3    | Clarification: the load shedding schedule is simulated sample data stored in SQLite, not official City of Cape Town data | Avoids depending on an external API, so the app runs reliably for anyone who installs it |
 | 6    | Addition: the status route also returns an "active outage" flag for power and water, set when an area receives 3 or more reports of that type within the last hour | Phase 1 aimed to give a crowd-verified picture of conditions. This turns individual reports into a clear signal for other users, and gives the back-end real logic beyond storing and listing data |
+| 10   | Addition: a small script (`npm run set-stage`) to change the load shedding stage | The stage is stored in the database and there is no screen for changing it. The script lets anyone try the different stages without needing an extra SQLite tool, and keeps the app simple by not adding an admin screen |

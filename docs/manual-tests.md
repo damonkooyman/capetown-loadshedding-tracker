@@ -1,6 +1,6 @@
 # Manual Test Log
 
-Tests run by hand in the browser, with curl and with sqlite3. The API tests T1 to T20 are also repeated as automated tests (see the section at the end).
+Tests run by hand in the browser, with curl and with sqlite3. The API tests T1 to T20 are also repeated as automated tests (see the section near the end).
 
 ## Step 4: Area status route
 
@@ -77,4 +77,12 @@ Run with `npm test`. The tests use Node's built-in test runner, so no extra pack
 
 **Latest run:** 85 tests, 85 passed, 0 failed.
 
-**Not automated:** the browser behaviour (T21 to T35) is checked by hand, because it depends on how the page looks and feels on real screens.
+**Not automated:** the browser behaviour (T21 to T35) and the stage script (T36 and T37) are checked by hand, because they depend on how the page looks and feels, or on typing commands.
+
+## Step 10: Stage script and README
+
+| ID | Test | Action | Expected result | Result |
+|----|------|--------|-----------------|--------|
+| T36 | Change the stage | Run `npm run set-stage -- 4`, then view Sea Point | "Load shedding stage set to 4." and Sea Point shows Stage 4 with 4 slots | Pass |
+| T37 | Bad stage value rejected | Run `npm run set-stage -- 9` | Usage message; the stage does not change | Pass |
+| T38 | README displays correctly | Open the README in the Markdown preview | Headings, tables, code blocks and the folder tree display correctly | Pass |

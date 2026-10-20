@@ -151,3 +151,26 @@ risk without adding value for this project's scope.
   browser behaviour (T21 to T35) is still tested by hand.
 - Deliberately breaking the code (for example changing the outage threshold)
   makes the matching tests fail, which shows the tests really protect the logic.
+
+## Changing the stage for demonstrations
+- The current load shedding stage is stored in the `settings` table. In a real
+  system it would come from an official source, so the app has no screen for
+  changing it.
+- `npm run set-stage -- <0 to 8>` (`scripts/set-stage.js`) updates the stored
+  stage so the different stages can be demonstrated. It checks that the value is
+  a whole number from 0 to 8. The server reads the stage on every request, so no
+  restart is needed.
+- A script was chosen instead of an admin screen to keep the app simple, and
+  instead of the `sqlite3` command because that tool is not installed everywhere.
+
+## Installation and documentation
+- The README explains the requirements, installation, running, testing, the
+  stage script, the project structure, the API and troubleshooting.
+- `package.json` records the Node.js version the project needs (`engines`), and
+  `package-lock.json` fixes the exact dependency versions, so `npm install`
+  gives anyone the same result.
+- The database is created and filled automatically on first run, so there is no
+  separate set-up step. No external APIs are used, so no keys or credentials are
+  needed.
+- Every source file starts with a comment explaining its purpose, and functions
+  are commented, so another developer can follow the intent and the execution.
