@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "set-stage": "node scripts/set-stage.js"
+  },
+    "engines": {
+    "node": ">=20"
   },
   "author": "Damon Kooyman",
   "license": "ISC",
