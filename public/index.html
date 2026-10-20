@@ -1,5 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+   <!DOCTYPE html>
+   <!--
+     public/index.html
+     The single page of the app. It is made of sections that js/app.js shows or
+     hides as data arrives, and css/style.css makes it responsive.
+   -->
+   <html lang="en">
 <head>
   <meta charset="UTF-8">
   <!-- Makes the page scale correctly on phones and tablets -->
@@ -21,7 +26,7 @@
       <p>This app needs JavaScript. Please turn it on in your browser settings.</p>
     </noscript>
 
-    <!-- Step 1: the user picks an area. The options are filled in by js/app.js -->
+    <!-- Part 1: the user picks an area. The options are filled in by js/app.js -->
     <section id="area-picker">
       <label for="area-select">Choose your area</label>
       <select id="area-select">
@@ -32,7 +37,7 @@
     <!-- General messages (loading and errors) are shown here -->
     <p id="page-message" role="status" hidden></p>
 
-    <!-- Step 2: status for the chosen area (hidden until an area is chosen) -->
+    <!-- Part 2: status for the chosen area (hidden until an area is chosen) -->
     <section id="status-section" hidden>
       <h2 id="area-name"></h2>
 
@@ -55,7 +60,7 @@
       <ul id="community-list"></ul>
     </section>
 
-    <!-- Step 3: the report form -->
+    <!-- Part 3: the report form -->
     <section id="report-section" hidden>
       <h2>Report a problem</h2>
       <form id="report-form">
@@ -75,7 +80,7 @@
       <p id="form-message" role="status" hidden></p>
     </section>
 
-    <!-- Step 4: the most recent reports for the area -->
+    <!-- Part 4: the most recent reports for the area -->
     <section id="reports-section" hidden>
       <h2>Recent reports</h2>
       <ul id="reports-list"></ul>

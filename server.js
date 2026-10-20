@@ -5,7 +5,11 @@
  * Responsibilities:
  *  - Start an Express web server
  *  - Serve the front-end files (HTML/CSS/JS) from the /public folder
- *  - Provide API routes that the front-end calls using fetch()
+ *  - Provide the API routes that the front-end calls using fetch()
+ *    (all of them are described in docs/api.md)
+ *
+ * The app is exported at the bottom of the file so the automated tests can
+ * start it themselves. "npm start" runs this file directly.
  */
 
 const express = require('express');
@@ -21,9 +25,16 @@ const PORT = process.env.PORT || 3000;
 
 // --- Constants ---
 
+// The two kinds of report a user can submit
 const VALID_REPORT_TYPES = ['power', 'water'];
+
+// The longest report description allowed, in characters
 const MAX_DESCRIPTION_LENGTH = 200;
+
+// How many recent reports the reports route returns for an area
 const MAX_REPORTS_RETURNED = 20;
+
+// The error message used by every route that takes an area id
 const INVALID_ID_ERROR = 'Area id must be a positive whole number';
 
 // Active outage rule: an area is flagged when it has at least
