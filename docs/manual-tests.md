@@ -86,3 +86,13 @@ Run with `npm test`. The tests use Node's built-in test runner, so no extra pack
 | T36 | Change the stage | Run `npm run set-stage -- 4`, then view Sea Point | "Load shedding stage set to 4." and Sea Point shows Stage 4 with 4 slots | Pass |
 | T37 | Bad stage value rejected | Run `npm run set-stage -- 9` | Usage message; the stage does not change | Pass |
 | T38 | README displays correctly | Open the README in the Markdown preview | Headings, tables, code blocks and the folder tree display correctly | Pass |
+
+## Step 11: Installation tests
+
+Installation was tested on macOS (Apple M1) with Node.js v24.21.0, following only the instructions in the README.
+
+| ID | Test | Action | Expected result | Result |
+|----|------|--------|-----------------|--------|
+| T39 | Install from a fresh GitHub clone | Clone the repository into a new folder, then `npm install`, `npm start`, open the app and run `npm test` | Installs without errors, the repository stays clean (`git status` shows no changes), the database is created automatically, the app works and all automated tests pass | Pass |
+| T40 | Install from the submission zip | Unzip into a new folder, then `npm install`, `npm test` and `npm start` | Same as T39 | Pass |
+| T41 | Repository is public | Open the repository address in a private browser window | The code and README are visible without signing in | Pass |
